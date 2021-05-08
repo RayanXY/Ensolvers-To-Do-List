@@ -2,6 +2,9 @@ package models;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name = "tasks")
 public class Task {
@@ -10,11 +13,26 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="folder_id")
+	@OnDelete(action = OnDeleteAction.CASCADE)
+	private Folder folder;
+	
 	@Column(name = "description")
 	private String description;
 	
 	@Column(name = "done")
 	private boolean done;
+	
+	// Constructors
+	public Task() {
+		// Intentionally left blank
+	}
+	
+	public Task(String description, boolean done) {
+		this.description = description;
+		this.done = done;
+	}
 	
 	// Getters
 	public Integer getId() {
@@ -29,7 +47,7 @@ public class Task {
 		return done;
 	}
 	
-	// Setter
+	// Setters
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -42,8 +60,9 @@ public class Task {
 		this.done = done;
 	}
 	
-	public Task() {
-		// Intentionally left blank
+	@Override
+	public String toString() {
+		return "Task-" + id + ": " + description + " [" + done + "]";
 	}
 	
 }
