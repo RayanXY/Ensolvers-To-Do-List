@@ -1,95 +1,48 @@
 import './css/App.css';
 import React from 'react';
 import axios from 'axios';
-import Titles from './components/TItles';
-import TodoList from './components/TodoList';
-import AddTodoItem from './components/AddTodoItem';
-import UpdateTodoItem from './components/UpdateTodoItem';
+import Titles from './components/Titles';
+import FolderList from './components/Folders/FolderList';
+import AddFolder from './components/Folders/AddFolder';
 
 class App extends React.Component {
 
     state={
-        list: [],
-		showEdit: false,
-		editTask: "",
+		folderList: [],
     }
 
-    getListFromBD() {
-        axios.get("http://localhost:8080/tasks").then(response => response.data)
+	// FOLDERS API
+	getFolderListFromBD() {
+		axios.get("http://localhost:8080/folders").then(response => response.data)
             .then((data) => {
-                this.setState({ list: data });
-            })
-    }
-
-    componentDidMount() {
-        this.getListFromBD();
-    }
-
-	// SHOWS EDIT BLOCK
-	showEditItem = (bool, task) => {
-		this.setState({
-			showEdit: bool,
-			editTask: task
-		});
+                this.setState({ folderList: data });
+            });
 	}
- 
-    // ADD NEW TASK
-    addItem = (newTask) => {
-		if(newTask === "") {
+
+	// ADD NEW FOLDER
+	addFolder = (newFolderName) => {
+		if(newFolderName === "") {
 			return;
 		}
-        const item = {id: 0, description: newTask, done: 0};
-        axios.post("http://localhost:8080/tasks", item)
-             .then(res => {
-                 this.getListFromBD();
-             })
-    }
-
-	// UPDATE A TASK
-	updateItem = (task, taskDescription) => {
-		const item = {id: task.id, description: taskDescription, done: !task.done};
-		axios.put("http://localhost:8080/tasks/", item)
-        .then(res => {
-			this.setState({
-				showEdit: false,
+		const folder = {id: 0, name: newFolderName};
+		axios.post("http://localhost:8080/folders", folder)
+			.then(response => {
+				this.getFolderListFromBD();
 			});
-            this.getListFromBD();
-        })
 	}
 
-	// DELETE A TASK
-    deleteItem = (deleteTaskID) => {
-        axios.delete(`http://localhost:8080/tasks/${deleteTaskID}`)
-        .then(res => {
-            this.getListFromBD();
-        });
-    }
-
-    // MARK A TASK AS DONE
-    doneItem = (updateTask) => {
-        axios.put("http://localhost:8080/tasks/", updateTask)
-        .then(res => {
-            this.getListFromBD();
-        })
+	// APP FUNCTIONS
+	componentDidMount() {
+        this.getFolderListFromBD();
     }
 
     render() {
         return(
-			<div>
-				<div className="ToDo_List">
-					<Titles title="To-Do List" size={34} />
-					<Titles title="Tasks" size={24} />   
-					<TodoList list={this.state.list} deleteItem={this.deleteItem} doneItem={this.doneItem} showEditItem={this.showEditItem}/>
-					<Titles title="Add task" size={24} />
-					<AddTodoItem addItem={this.addItem} />
-					
-				</div>
-				{this.state.showEdit && 
-					<div className="ToDo_List" style={{ marginTop: "10px" }}>
-							<Titles title={"Editing Task \"" + this.state.editTask.description + "\""} size={18}/>
-							<UpdateTodoItem editItem={this.state.editTask} showEditItem={this.showEditItem} updateItem={this.updateItem} />
-					</div>
-				}
+			<div className="ToDo_List">
+				<Titles title="Folders" size={34} />
+				<FolderList folderList={this.state.folderList} />
+				<Titles title="Create new folder" size={24} />
+				<AddFolder addFolder={this.addFolder} />
 			</div>
         );
     }

@@ -10,6 +10,10 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
+	@ManyToOne
+	@JoinColumn(name="folder_id", nullable=false)
+	private Folder folder;
+	
 	@Column(name = "description")
 	private String description;
 	
