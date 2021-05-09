@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ensolvers.todolist.models.Task;
@@ -30,15 +29,11 @@ public class TaskController {
 	TaskRepository taskRepository;
 	
 	@GetMapping("/tasks")
-	public ResponseEntity<List<Task>> getAllTasks(/*@RequestParam(required = false) Folder folder*/) {
+	public ResponseEntity<List<Task>> getAllTasks() {
 		try {
 			List<Task> tasks = new ArrayList<Task>();
 			
-//			if(folder == null) {
-				taskRepository.findAll().forEach(tasks::add);			
-			/*} else {
-				taskRepository.findByFolder(folder).forEach(tasks::add);
-			}*/
+			taskRepository.findAll().forEach(tasks::add);
 			
 			if(tasks.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -64,7 +59,7 @@ public class TaskController {
 	@PostMapping("/tasks")
 	public ResponseEntity<Task> createTask(@RequestBody Task task) {
 		try {
-			Task new_task = taskRepository.save(new Task(task.getDescription(), /*null,*/ false));
+			Task new_task = taskRepository.save(new Task(task.getDescription(), false));
 			return new ResponseEntity<>(new_task, HttpStatus.CREATED);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
