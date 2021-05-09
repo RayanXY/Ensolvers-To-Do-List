@@ -1,4 +1,4 @@
-package models;
+package com.ensolvers.todolist.models;
 
 import java.util.List;
 

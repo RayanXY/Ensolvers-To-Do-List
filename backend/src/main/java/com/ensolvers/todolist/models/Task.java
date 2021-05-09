@@ -1,9 +1,9 @@
-package models;
+package com.ensolvers.todolist.models;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+//import org.hibernate.annotations.OnDelete;
+//import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "tasks")
@@ -13,10 +13,10 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="folder_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Folder folder;
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumn(name="folder_id", nullable = true)
+//	@OnDelete(action = OnDeleteAction.CASCADE)
+//	private Folder folder;
 	
 	@Column(name = "description")
 	private String description;
@@ -29,8 +29,9 @@ public class Task {
 		// Intentionally left blank
 	}
 	
-	public Task(String description, boolean done) {
+	public Task(String description, /*Folder folder,*/ boolean done) {
 		this.description = description;
+//		this.folder = folder;
 		this.done = done;
 	}
 	
