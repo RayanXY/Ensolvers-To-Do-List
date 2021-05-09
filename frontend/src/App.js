@@ -4,11 +4,14 @@ import axios from 'axios';
 import Titles from './components/TItles';
 import TodoList from './components/TodoList';
 import AddTodoItem from './components/AddTodoItem';
+import UpdateTodoItem from './components/UpdateTodoItem';
 
 class App extends React.Component {
 
     state={
-        list: []
+        list: [],
+		showEdit: false,
+		editTask: "",
     }
 
     getListFromBD(){
@@ -21,6 +24,14 @@ class App extends React.Component {
     componentDidMount(){      
         this.getListFromBD();
     }
+
+	// SHOWS EDIT BLOCK
+	showEditItem = (bool, task) => {
+		this.setState({
+			showEdit: bool,
+			editTask: task
+		});
+	}
  
     // ADD NEW TASK
     addItem = (newTask) => {
@@ -39,7 +50,7 @@ class App extends React.Component {
         });
     }
 
-    // UPDATE A TASK
+    // MARK A TASK AS DONE
     doneItem = (updateTask) => {
         axios.put("http://localhost:8080/tasks/", updateTask)
         .then(res => {
@@ -49,13 +60,22 @@ class App extends React.Component {
 
     render() {
         return(
-            <div className="ToDo_List">
-                <Titles title="To-Do List" size={34} />
-                <Titles title="Tasks" size={24} />   
-               	<TodoList list={this.state.list} deleteItem={this.deleteItem} doneItem={this.doneItem}/>
-                <Titles title="Add task" size={24} />
-                <AddTodoItem addItem={this.addItem} />
-            </div>
+			<div>
+				<div className="ToDo_List">
+					<Titles title="To-Do List" size={34} />
+					<Titles title="Tasks" size={24} />   
+					<TodoList list={this.state.list} deleteItem={this.deleteItem} doneItem={this.doneItem} showEditItem={this.showEditItem}/>
+					<Titles title="Add task" size={24} />
+					<AddTodoItem addItem={this.addItem} />
+					
+				</div>
+				{this.state.showEdit && 
+					<div className="ToDo_List" style={{ marginTop: "10px" }}>
+							<Titles title={"Editing Task \"" + this.state.editTask.description + "\""} size={18}/>
+							<UpdateTodoItem editItem={this.state.editTask} showEditItem={this.showEditItem} />
+					</div>
+				}
+			</div>
         );
     }
     

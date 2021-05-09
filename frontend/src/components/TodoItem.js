@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 class TodoItem extends React.Component {
 
     render (){
-        const { task, deleteItem, doneItem } = this.props;
+        const { task, deleteItem, doneItem, showEditItem } = this.props;
 
         return(
             <ListItem>
@@ -21,7 +21,7 @@ class TodoItem extends React.Component {
 
                 <ListItemText className={task.done ? "StruckLine" : "Titles"} primary={task.description} />
 
-				<IconButton>
+				<IconButton edge="end" onClick={() => showEditItem(true, task)}>
 					<EditIcon color="primary" />
 				</IconButton>
 

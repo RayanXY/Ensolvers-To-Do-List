@@ -5,14 +5,14 @@ import List from '@material-ui/core/List';
 class TodoList extends React.Component {
 
     render() {
-        const { list, deleteItem, doneItem } = this.props  
+        const { list, deleteItem, doneItem, showEditItem } = this.props  
 
         return (
             <List>
             {
                 list.map( task => {
                     return(
-                        <TodoItem key={task.id} task={task} deleteItem={deleteItem} doneItem={doneItem} />
+                        <TodoItem key={task.id} task={task} deleteItem={deleteItem} doneItem={doneItem} showEditItem={showEditItem} />
                     )
                 })
             }
