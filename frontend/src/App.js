@@ -14,14 +14,14 @@ class App extends React.Component {
 		editTask: "",
     }
 
-    getListFromBD(){
+    getListFromBD() {
         axios.get("http://localhost:8080/tasks").then(response => response.data)
             .then((data) => {
                 this.setState({ list: data });
             })
     }
 
-    componentDidMount(){      
+    componentDidMount() {
         this.getListFromBD();
     }
 
@@ -35,6 +35,9 @@ class App extends React.Component {
  
     // ADD NEW TASK
     addItem = (newTask) => {
+		if(newTask === "") {
+			return;
+		}
         const item = {id: 0, description: newTask, done: 0};
         axios.post("http://localhost:8080/tasks", item)
              .then(res => {
@@ -42,8 +45,20 @@ class App extends React.Component {
              })
     }
 
+	// UPDATE A TASK
+	updateItem = (task, taskDescription) => {
+		const item = {id: task.id, description: taskDescription, done: !task.done};
+		axios.put("http://localhost:8080/tasks/", item)
+        .then(res => {
+			this.setState({
+				showEdit: false,
+			});
+            this.getListFromBD();
+        })
+	}
+
 	// DELETE A TASK
-    deleteItem = (deleteTaskID) =>{
+    deleteItem = (deleteTaskID) => {
         axios.delete(`http://localhost:8080/tasks/${deleteTaskID}`)
         .then(res => {
             this.getListFromBD();
@@ -72,7 +87,7 @@ class App extends React.Component {
 				{this.state.showEdit && 
 					<div className="ToDo_List" style={{ marginTop: "10px" }}>
 							<Titles title={"Editing Task \"" + this.state.editTask.description + "\""} size={18}/>
-							<UpdateTodoItem editItem={this.state.editTask} showEditItem={this.showEditItem} />
+							<UpdateTodoItem editItem={this.state.editTask} showEditItem={this.showEditItem} updateItem={this.updateItem} />
 					</div>
 				}
 			</div>

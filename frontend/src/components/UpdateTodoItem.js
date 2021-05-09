@@ -9,24 +9,24 @@ class UpdateTodoItem extends React.Component {
    constructor(props){
         super(props);
         this.state = {
-            task: "",
+            editDescription: props.editItem.description,
         };
     }
 
     handleChange = (e) => {
         this.setState({
-            task: e.target.value
+            editDescription: e.target.value
         });
     }
 
     render () {
-        const { editItem, showEditItem } = this.props 
+        const { editItem, showEditItem, updateItem } = this.props;
 
         return (
             <div className="Task">
                 <Input defaultValue={editItem.description} onChange={this.handleChange} />
                 <IconButton>
-                    <SaveIcon />
+                    <SaveIcon onClick={() => updateItem(editItem, this.state.editDescription)}/>
                 </IconButton>
 				<IconButton>
 					<CloseIcon color="secondary" onClick={() => showEditItem(false, "")} />
