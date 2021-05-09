@@ -1,0 +1,19 @@
+.ToDo_List {
+    background-color: burlywood;
+    width: 350px;
+    overflow: auto;
+    padding-bottom: 5%;
+}
+
+.Task {
+    margin-left: 50px;
+    position: relative;
+}
+
+.StruckLine {
+    text-decoration: line-through;
+}
+
+.Titles {
+    font-family: 'Indie Flower', cursive;
+}

@@ -2,3 +2,4 @@
 /home/rayan/projects/Ensolvers-To-Do-List/backend/src/main/java/com/ensolvers/todolist/ToDoListApplication.java
 /home/rayan/projects/Ensolvers-To-Do-List/backend/src/main/java/com/ensolvers/todolist/repositories/TaskRepository.java
 /home/rayan/projects/Ensolvers-To-Do-List/backend/src/main/java/com/ensolvers/todolist/controllers/TaskController.java
+/home/rayan/projects/Ensolvers-To-Do-List/backend/src/main/java/com/ensolvers/todolist/services/TaskService.java
